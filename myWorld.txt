@@ -1,0 +1,128 @@
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+/*
+ * class Encrit13
+ * @author Leo Hernandez
+ * Course: advance programming Fall 2012
+ * Class: This class encrypts each letter by returning the letter located 13 spaces to the right.
+ 		if there isn't a letter 13 spaces after, it wraps around and starts at the beginning.
+ *		
+ * PURPOSE: the purpose for this class is to encrypt a text by changing the letter for the 13th letter after it.
+ *
+ * i got some of the code for the enter key action listener in
+ * http://www.coderanch.com/t/342428/GUI/java/write-event-Enter-key
+ */
+
+
+
+
+public class Encrit13 {
+	private static JTextField text = new JTextField(20); 
+	private static JTextField encoded = new JTextField(20);
+	//runs when 'Enter' is pressed
+	private ActionListener listener = new ActionListener(){
+
+
+		/*
+		 * (non-Javadoc)
+		 * I was having some minor difficulties with the actionEvent , but I met with Vu 
+		 * one day and he helped me with the code below.
+		 * he showed me the Java Ascii Table
+		 */
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			String line = text.getText();  
+			String encryptM = "";
+
+			for(int i = 0; i<line.length();i++)
+			{
+				int asciiRep = (int) line.charAt(i);
+				if((asciiRep >= 65 && asciiRep <= 90)|| asciiRep >= 97 && asciiRep <= 122)
+				{
+					if((asciiRep <= 77)|| (asciiRep >= 97 && asciiRep <= 109))
+					{
+						asciiRep += 13;
+
+					}//end of if
+					else if((asciiRep > 77 && asciiRep <= 90)|| (asciiRep >= 110 && asciiRep <= 122))
+					{
+						asciiRep -= 13;
+					}//end of if
+				}//end of main if
+				encryptM += (char)asciiRep;
+			}//end of for 
+			encoded.setText(encryptM);
+			//encoded message cannot be edited 
+			encoded.setEditable(false);
+		}// end of ActionPerformed
+
+	};// end of actionListener
+
+	//Constructor
+	/*
+	 * Method: Encrit13
+	 * 		
+	 * 		This method runs the action listener
+	 */
+	public Encrit13(){
+		text.addActionListener(listener);  
+
+	}
+	/*Method: frame
+	 * this method creates the frame and makes all the parts visible
+	 */
+
+	public static void frame() {
+		//Create and set up the window.
+		JFrame frame = new JFrame("Encript by Rotating 13 "); // title
+
+
+		JPanel j1 = new JPanel(new FlowLayout());
+		JPanel panel2 = new JPanel();
+		JLabel original = new JLabel ("Original message: ");
+		JLabel encrypt = new JLabel ("Encrypted message:");
+
+		j1.add(original);
+		j1.add(text);
+		panel2.add(encrypt);
+		panel2.add(encoded);
+
+		frame.add(j1);
+		frame.add(panel2);
+		frame.setLayout(new GridLayout(2,2));
+		frame.setSize(300,150);
+		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);// makes the window in the center of the screen
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// allows the program to close by clicking on the x
+
+		//Display the window.
+		frame.pack();
+		frame.setVisible(true);
+	}
+
+	/*
+	 * Method: main
+	 * 
+	 * 	This method runs the program
+	 */
+	public static void main(String[] args) {  
+		EventQueue.invokeLater(new Runnable(){  
+			@SuppressWarnings("static-access")
+			public void run() {  
+				new Encrit13().frame();  
+			}  
+		});  
+	}  
+}
